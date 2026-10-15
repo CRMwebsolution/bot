@@ -1,0 +1,23 @@
+{
+  "name": "n8n-bot-hub",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Self-hosted PWA for personal n8n bots across desktop, tablet, and mobile.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "build:css": "tailwindcss -i ./public/tailwind.css -o ./public/styles.css --minify"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "better-sqlite3": "^13.0.3",
+    "express": "^4.21.2",
+    "multer": "^2.4.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "tailwindcss": "^4.3.3"
+  }
+}

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0f14">
+  <meta name="color-scheme" content="dark">
+  <meta name="robots" content="noindex">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Bot Hub">
+  <title>n8n Bot Hub</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/icon-192.png" sizes="192x192">
+  <link rel="apple-touch-icon" href="/icon-180.png">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div id="app" class="app">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-head">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" width="22" height="22">
+              <path d="M16 5 L25 20 H7 Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+              <circle cx="16" cy="6.5" r="2.1" fill="currentColor"/>
+              <circle cx="7.2" cy="20.2" r="2.1" fill="currentColor"/>
+              <circle cx="24.8" cy="20.2" r="2.1" fill="currentColor"/>
+            </svg>
+          </span>
+          <div>
+            <strong>Bot Hub</strong>
+            <em>n8n</em>
+          </div>
+        </div>
+        <button type="button" class="icon-btn collapse-btn" data-act="collapse-sidebar" aria-label="Collapse sidebar">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M15 6 L9 12 L15 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <button type="button" class="new-bot" data-act="new-bot">New bot</button>
+      <label class="filter">
+        <span class="sr-only">Filter bots</span>
+        <input id="bot-filter" type="search" placeholder="Filter channels" autocomplete="off">
+      </label>
+      <div class="bot-list" id="bot-list" role="list"></div>
+      <p class="sidebar-empty" id="bot-empty" hidden>No channels yet.</p>
+      <footer class="sidebar-foot">
+        <p id="live-status" class="live is-off"><i></i><span>Connecting</span></p>
+        <button type="button" id="install-btn" class="install-btn" hidden>Install app</button>
+        <p id="ios-hint" class="fine" hidden>On iPhone, open Share and choose Add to Home Screen.</p>
+        <p class="fine">Open on a private network. This hub has no login.</p>
+      </footer>
+    </aside>
+    <div class="backdrop" data-act="close-sidebar"></div>
+    <main class="chat" id="chat">
+      <header class="chat-head">
+        <button type="button" class="icon-btn menu-btn" data-act="toggle-sidebar" aria-label="Open channels">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+        <div class="chat-id">
+          <div class="avatar hue-0" id="chat-icon">◎</div>
+          <div class="chat-titles">
+            <h1 id="chat-name">n8n Bot Hub</h1>
+            <p id="chat-sub">Personal channels for your workflows</p>
+          </div>
+        </div>
+        <div class="chat-actions" id="chat-actions" hidden>
+          <button type="button" class="icon-btn" data-act="webhook-info" aria-label="Webhook info">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M8 8.5a3.5 3.5 0 0 1 5.2-3L16 3.2M16 15.5a3.5 3.5 0 0 1-5.2 3L8 20.8M8 12h8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          </button>
+          <button type="button" class="icon-btn" data-act="edit-bot" aria-label="Edit bot">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 20h4l10-10-4-4L4 16v4zM13 7l4 4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </header>
+      <p id="secure-note" class="banner" hidden>Microphone and home-screen install need localhost or HTTPS. Image upload and text still work on this address.</p>
+      <div class="messages" id="messages" tabindex="0"></div>
+      <button type="button" id="jump" class="jump" hidden>New messages</button>
+      <div class="composer-wrap" id="composer-wrap" hidden>
+        <div id="cmd-pop" class="cmd-pop" hidden></div>
+        <div id="attach-preview" class="attach-preview" hidden></div>
+        <div id="record-bar" class="record-bar" hidden>
+          <button type="button" class="text-btn danger" data-act="record-cancel">Cancel</button>
+          <canvas id="wave" aria-hidden="true"></canvas>
+          <span id="record-time">0:00</span>
+          <button type="button" class="text-btn" data-act="record-send">Send</button>
+        </div>
+        <form id="composer" class="composer" autocomplete="off">
+          <button type="button" class="icon-btn" data-act="attach" aria-label="Attach image">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M8 12.5l6.2-6.2a3 3 0 0 1 4.2 4.2l-7.4 7.4a4.2 4.2 0 0 1-6-6l6.8-6.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          </button>
+          <button type="button" class="icon-btn slash-btn" data-act="toggle-commands" aria-label="Quick commands">/</button>
+          <textarea id="composer-input" rows="1" maxlength="20000" placeholder="Message"></textarea>
+          <button type="button" class="icon-btn mic-btn" id="mic" aria-label="Record voice message" aria-pressed="false">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          </button>
+          <button type="submit" class="send-btn" id="send-btn" aria-label="Send">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 12 L20 4 L14 20 L11 13 Z" fill="currentColor"/></svg>
+          </button>
+        </form>
+        <input id="file-input" type="file" accept="image/*" hidden>
+      </div>
+    </main>
+  </div>
+  <div id="modal-root"></div>
+  <div id="lightbox" class="lightbox" hidden>
+    <button type="button" class="icon-btn lightbox-close" data-act="close-lightbox" aria-label="Close image">×</button>
+    <img id="lightbox-img" alt="">
+  </div>
+  <div id="toasts" aria-live="polite"></div>
+  <script src="/app.js" defer></script>
+</body>
+</html>
